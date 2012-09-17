@@ -1,0 +1,75 @@
+
+
+configurations {
+    benchmark  {
+    	description 'classpath for benchmark' 
+    	extendsFrom testRuntime
+	}
+}
+
+sourceSets {
+    benchmark {
+        java {
+            srcDirs = [ 'src/benchmark/java' ]
+        }
+
+        resources {
+            srcDirs = [ 'src/benchmark/resources' ]
+        }
+
+        compileClasspath += 
+        	sourceSets.main.output + 
+        	sourceSets.test.output +
+        	configurations.benchmark
+        	
+       	runtimeClasspath +=
+       		output +
+        	sourceSets.main.output + 
+        	sourceSets.test.output +
+        	configurations.benchmark
+    }
+}
+
+dependencies {
+	benchmark 'com.carrotsearch:junit-benchmarks:0.4.0'
+    benchmark 'com.h2database:h2:1.3.168'
+}
+
+task benchmarkTest {
+	def tests = [
+		'jpa': 'jpa',
+		'jpa-querydsl': 'jpa',
+		'jpa-springdatajpa': 'jpa',
+		'jdbc-querydsl': 'jdbc',
+		'jdbc-springext-querydsl': 'jdbc'
+	]
+
+	tests.each {
+		def type = "${it.key}"
+		def category = "${it.value}"
+		def newTask = tasks.add(name: "benchmark${type}", type: Test) {
+
+			jvmArgs '-Djub.consumers=CONSOLE,H2',
+				'-Djub.db.file=build/testdb/benchmarks',
+				"-Djub.customkey=${type}",
+				"-Dorm.category=${category}",
+				"-Dorm.type=${type}"
+
+			testClassesDir = sourceSets.benchmark.output.classesDir
+			classpath =
+				sourceSets.benchmark.runtimeClasspath +
+				sourceSets.main.resources +
+				sourceSets.test.resources +
+				sourceSets.benchmark.resources
+				
+			testReportDir = new File(buildDir, "reports/benchmarkTests/${type}")
+			testResultsDir = new File(buildDir, "benchmark-test-results/${type}")
+		}
+
+		dependsOn newTask
+	}
+  
+  doLast {
+    delete 'build/testdb/'
+  }
+}

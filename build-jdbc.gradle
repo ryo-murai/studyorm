@@ -1,0 +1,76 @@
+/**
+ * jdbc specific build script
+ */
+task queryDslQBeanGen {
+	def now = System.currentTimeMillis()
+	def workbasedir = new File(buildDir, 'generated/querydsl-sql/')
+    ext.destdir = new File(workbasedir, 'src')
+    ext.input = file('src/main/resources/sql/create-tables.sql')
+    
+    def dbname = "database$now"
+    def dbfile = new File(workbasedir, dbname)
+    
+    def genpackage = 'studyorm.querydslsql.beans'
+
+    inputs.file(ext.input)
+    outputs.dir(ext.destdir)
+    
+    doLast {
+    	def clazzpaths = configurations.qbeangen.plus(configurations.testRuntime).asPath
+    
+		def jdbcUrl = "jdbc:hsqldb:file:$dbfile;shutdown=true"
+		def driver = 'org.hsqldb.jdbcDriver'
+		def user = 'sa'
+		def password = ''
+		def jdbcProp = [
+			driver: driver,
+			url: jdbcUrl,
+			userId: user,
+			password: password,
+			classpath: clazzpaths
+	    ]
+	    
+		ant {
+			echo("$dbfile is used for temporary database")
+			// define ant tasks
+			taskdef(
+				name: 'sqlexec', 
+				classname: 'org.apache.tools.ant.taskdefs.SQLExec')
+			taskdef(
+				name: 'qbean', 
+				classname: 'com.mysema.query.sql.ant.AntMetaDataExporter', 
+				classpath: clazzpaths)
+
+			// run ddl script	
+			sqlexec(jdbcProp) {
+				transaction(src: ext.input)
+			}
+
+			// run code generation from database schema			
+			ext.destdir.mkdirs()
+			qbean(
+				jdbcDriverClass: driver,
+				dbUrl: jdbcUrl,
+				dbUserName: user,
+				dbPassword: password,
+				exportBeans: true,
+				targetPackage: genpackage,
+				beanTargetPackage: genpackage,
+				targetSourceFolder: ext.destdir
+			)
+
+			// shutdown and cleanup	
+			sqlexec(jdbcProp) {
+				transaction('SHUTDOWN;')
+			}
+			delete (includeEmptyDirs: 'true') { 
+			    fileset(dir: workbasedir, includes: "$dbname.*") 
+			}
+		}
+	}
+}
+
+compileJava {
+    dependsOn 'queryDslQBeanGen'
+    source queryDslQBeanGen.ext.destdir
+}

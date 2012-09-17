@@ -1,0 +1,44 @@
+/**
+ * jpa specific build script
+ */
+
+task execProcessor {
+    ext.destdir = new File(buildDir, 'generated/querydsl-jpa/src')
+    
+    def modelSrcs = fileTree('src/main/java') {
+      include 'studyorm/jpa/models/*.java'
+    }
+
+    inputs.files(modelSrcs)
+    outputs.dir(ext.destdir)
+
+    doLast {
+        ext.destdir.mkdirs()
+
+		def processors = [
+			'com.mysema.query.apt.jpa.JPAAnnotationProcessor',
+			'com.mysema.query.apt.QuerydslAnnotationProcessor',
+		]
+
+        def primaryOptions = [
+            includeAntRuntime: false,
+            destdir: ext.destdir,
+            classpath: configurations.compile.plus(configurations.processor).asPath,
+        ]
+
+		processors.each { p ->
+	        ant.javac(primaryOptions) {
+	           modelSrcs.addToAntBuilder((Object)ant, 'src', FileCollection.AntType.MatchingTask)
+	           compilerarg(value: "-proc:only") 
+	           compilerarg(value: "-implicit:none")
+	           compilerarg(value: "-processor")
+	           compilerarg(value: p)
+	        }
+        }
+    }
+}
+
+compileJava {
+    dependsOn 'execProcessor'
+    source execProcessor.ext.destdir
+}
