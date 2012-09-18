@@ -1,4 +1,4 @@
-
+import java.text.DecimalFormat
 
 configurations {
     benchmark  {
@@ -72,4 +72,81 @@ task benchmarkTest {
   doLast {
     delete 'build/testdb/'
   }
+}
+
+task benchmarkdbscript {
+	ext.input = file('src/main/resources/sql/create-tables.sql')
+	ext.output = new File(buildDir, 'testdb/benchmark-test-records.sql')
+	inputs.file(ext.input)
+	outputs.file(ext.output)
+	doLast {
+		ext.output.parentFile.mkdirs()
+		def writer = ext.output.newWriter()
+		
+		// -------------------------------
+		// customer records
+		// -------------------------------
+		writer.writeLine('INSERT INTO CUSTOMER (CUST_ID, NAME, EMAIL) VALUES')
+		writer.writeLine(""" (12112210, 'customer name00000', 'customer00000@example.com')""")
+
+		def origin = 12112210L		
+		(1..29999).each {n ->
+			def custId = origin + n
+			def seq = new DecimalFormat('00000').format(n)
+			writer.writeLine(""",(${custId}, 'customer name${seq}', 'customer${seq}@example.com')""")
+		}
+		writer.writeLine(""",(98765432, 'no orders customr', 'poorcustomer@example.com');""")
+
+		// -------------------------------
+		// order records
+		// -------------------------------
+		writer.writeLine('INSERT INTO TORDER (ITEM, DATE, CUST_ID) VALUES')
+		writer.writeLine(""" ('ItemName0000', '2012-08-01', 12112210)""")
+		(1..60000).each {n ->
+			def custId = origin + (n % 29999)
+			def seq = new DecimalFormat('00000').format(n)
+			def day = new DecimalFormat('00').format((n % 31) + 1)
+			writer.writeLine(""",('ItemName${seq}', '2012-08-${day}', ${custId})""")
+		}
+	
+		writer.write(";")
+		writer.close()	
+	}
+}
+
+task benchmarkdb(dependsOn: benchmarkdbscript) {
+	def ddl = file('src/main/resources/sql/create-tables.sql')
+	ext.input = benchmarkdbscript.ext.output
+	ext.output = new File(buildDir, 'testdb/targetdb')
+	inputs.file(ext.input)
+	outputs.file(ext.output)
+	doLast {
+		def jdbcUrl = "jdbc:hsqldb:file:${ext.output};shutdown=true"
+		def driver = 'org.hsqldb.jdbcDriver'
+		def user = 'sa'
+		def password = ''
+		def jdbcProp = [
+			driver: driver,
+			url: jdbcUrl,
+			userId: user,
+			password: password,
+			classpath: configurations.benchmark.asPath
+		]
+		
+		ant {
+			echo("database file ${ext.output} is used for benchmark test")
+			// define ant tasks
+			taskdef(
+				name: 'sqlexec',
+				classname: 'org.apache.tools.ant.taskdefs.SQLExec')
+
+			// run ddl script
+			sqlexec(jdbcProp) {
+				transaction(src: ddl)
+			}
+			sqlexec(jdbcProp) {
+				transaction(src: ext.input)
+			}
+		}
+	}
 }
