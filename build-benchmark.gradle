@@ -113,3 +113,40 @@ task benchmarkdbscript {
 		writer.close()	
 	}
 }
+
+task benchmarkdb(dependsOn: benchmarkdbscript) {
+	def ddl = file('src/main/resources/sql/create-tables.sql')
+	ext.input = benchmarkdbscript.ext.output
+	ext.output = new File(buildDir, 'testdb/targetdb')
+	inputs.file(ext.input)
+	outputs.file(ext.output)
+	doLast {
+		def jdbcUrl = "jdbc:hsqldb:file:${ext.output};shutdown=true"
+		def driver = 'org.hsqldb.jdbcDriver'
+		def user = 'sa'
+		def password = ''
+		def jdbcProp = [
+			driver: driver,
+			url: jdbcUrl,
+			userId: user,
+			password: password,
+			classpath: configurations.benchmark.asPath
+		]
+		
+		ant {
+			echo("database file ${ext.output} is used for benchmark test")
+			// define ant tasks
+			taskdef(
+				name: 'sqlexec',
+				classname: 'org.apache.tools.ant.taskdefs.SQLExec')
+
+			// run ddl script
+			sqlexec(jdbcProp) {
+				transaction(src: ddl)
+			}
+			sqlexec(jdbcProp) {
+				transaction(src: ext.input)
+			}
+		}
+	}
+}
