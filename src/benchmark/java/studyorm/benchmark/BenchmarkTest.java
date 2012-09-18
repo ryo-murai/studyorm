@@ -39,33 +39,9 @@ public class BenchmarkTest {
 	@Autowired
 	protected DataAccessObject targetDto;
 
-	@Autowired
-	protected TestHelper helper;
-
-	@Value("${classpath:/sql/create-tables.sql}")
-	private Resource createTablesSql;
-
-	// TODO: less logging configuration
-	@Value("${classpath:/sql/insert-6k.sql}")
-	private Resource insertRecordsSql;
-
-	@Value("${classpath:/sql/drop-tables.sql}")
-	private Resource dropTablesSql;
-
 	@SuppressWarnings("deprecation")
 	@Rule
 	public org.junit.rules.MethodRule rule = new BenchmarkRule();
-
-	@BeforeTransaction
-	public void setupDatabase() {
-		helper.runSqlScriptIgnoreError(createTablesSql);
-		helper.runSqlScript(insertRecordsSql);
-	}
-
-	@AfterTransaction
-	public void tearDownDatabase() {
-		helper.runSqlScriptIgnoreError(dropTablesSql);
-	}
 
 	@Test
 	public void insert() {
