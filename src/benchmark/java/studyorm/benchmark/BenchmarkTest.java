@@ -33,7 +33,7 @@ import com.carrotsearch.junitbenchmarks.annotation.LabelType;
 @Transactional
 @AxisRange(min = 0, max = 1)
 @BenchmarkMethodChart(filePrefix = "build/reports/benchmarks/benchmark")
-@BenchmarkHistoryChart(filePrefix = "build/reports/benchmarks/BenchmarkTest", labelWith = LabelType.CUSTOM_KEY, maxRuns = 20)
+@BenchmarkHistoryChart(filePrefix = "build/reports/benchmarks/BenchmarkTest", labelWith = LabelType.CUSTOM_KEY, maxRuns = 5)
 public class BenchmarkTest {
 
 	@Autowired
@@ -61,7 +61,7 @@ public class BenchmarkTest {
 	@Test
 	public void deleteBatch() {
 		@SuppressWarnings("unused")
-		int result = targetDto.deleteOrdersByNameStartWith("ItemName0");
+		int result = targetDto.deleteOrdersByNameStartWith("ItemName00");
 	}
 
 	@Test
@@ -71,11 +71,12 @@ public class BenchmarkTest {
 
 	@Test
 	public void updateBatch() {
-		LocalDate date = new LocalDate();
-		String newOrderItem = "ItemName9999";
+		LocalDate date = new LocalDate(2012, 8, 15);
+		String newOrderItem = "ItemName99999";
 
 		@SuppressWarnings("unused")
-		int result = targetDto.updateOrdersItemOlderThan(date.toDate(), newOrderItem);		
+		int result = targetDto.updateOrdersItemOlderThan(date.toDate(), newOrderItem);
+		// approx 50% of records of order
 	}
 
 	@Test
@@ -87,6 +88,7 @@ public class BenchmarkTest {
 	@Test
 	public void queryMany() {
 		@SuppressWarnings("unused")
-		List<String> items = targetDto.queryOrderItemsByCustomerEmail("customer2000@example.com");
+		List<String> items = targetDto.queryOrderItemsByCustomerEmail("customer20000@example.com");
+		// 2 records of order
 	}
 }
