@@ -115,13 +115,14 @@ task benchmarkdb(dependsOn: 'benchmarkdbscript') {
 	}
 }
 
-task benchmarkTest(dependsOn: 'benchmarkdb') {
+task benchmarkTest {
 	def tests = [
 		'jpa': 'jpa',
 		'jpa-querydsl': 'jpa',
 		'jpa-springdatajpa': 'jpa',
 		'jdbc-querydsl': 'jdbc',
 		'jdbc-springext-querydsl': 'jdbc',
+		"jdbc-springjdbc": "jdbc",
 	]
 
 	// you need to set your hsqldb DataSource to attach the below file
@@ -132,7 +133,7 @@ task benchmarkTest(dependsOn: 'benchmarkdb') {
 	tests.each {
 		def type = "${it.key}"
 		def category = "${it.value}"
-		def newTask = tasks.add(name: "benchmark${type}", type: Test) {
+		def newTask = tasks.add(name: "benchmark${type}", type: Test, dependsOn: 'benchmarkdb') {
 
 			jvmArgs '-Djub.consumers=CONSOLE,H2',
 				'-Djub.db.file=build/testdb/benchmarks',
@@ -148,7 +149,7 @@ task benchmarkTest(dependsOn: 'benchmarkdb') {
 				sourceSets.benchmark.resources
 				
 			testReportDir = new File(buildDir, "reports/benchmarkTests/${type}")
-			testResultsDir = new File(buildDir, "benchmark-test-results/${type}")
+			testResultsDir = new File(buildDir, "test-results/benchmark/${type}")
 		}
 		
 		newTask.doFirst {

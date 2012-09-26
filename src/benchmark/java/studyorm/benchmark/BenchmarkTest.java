@@ -29,11 +29,11 @@ import com.carrotsearch.junitbenchmarks.annotation.LabelType;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/application-context-proxy.xml")
-@TransactionConfiguration
+@TransactionConfiguration(defaultRollback=false)
 @Transactional
 @AxisRange(min = 0, max = 1)
 @BenchmarkMethodChart(filePrefix = "build/reports/benchmarks/benchmark")
-@BenchmarkHistoryChart(filePrefix = "build/reports/benchmarks/BenchmarkTest", labelWith = LabelType.CUSTOM_KEY, maxRuns = 5)
+@BenchmarkHistoryChart(filePrefix = "build/reports/benchmarks/BenchmarkTest", labelWith = LabelType.CUSTOM_KEY, maxRuns = 6)
 public class BenchmarkTest {
 
 	@Autowired
