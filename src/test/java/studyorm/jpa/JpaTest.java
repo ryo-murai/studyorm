@@ -15,15 +15,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import studyorm.AbstractDtoTest;
+import studyorm.AbstractDataOperationsTest;
 import studyorm.jpa.models.Customer;
 import studyorm.jpa.models.Order;
 
-@ContextConfiguration(locations={"/application-context-jpa.xml", "/dto-jpa.xml"})
+@ContextConfiguration(locations={"/application-context-jpa.xml", "/bean-jpa.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration
 @Transactional
-public class JpaTest extends AbstractDtoTest {
+public class JpaTest extends AbstractDataOperationsTest {
 
     @PersistenceContext
     private EntityManager em;

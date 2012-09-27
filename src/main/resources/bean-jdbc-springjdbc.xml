@@ -6,6 +6,5 @@
     http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-	<bean id="dtobean" class="studyorm.jpa.querydsl.QueryDslJpaDao" />
-	<bean id="jpqlTemplates" class="com.mysema.query.jpa.HQLTemplates" />
+	<bean id="dtobean" class="studyorm.springjdbc.SpringJdbcOperations" />
 </beans>

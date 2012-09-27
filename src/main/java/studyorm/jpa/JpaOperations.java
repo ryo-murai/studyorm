@@ -7,11 +7,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import studyorm.DataAccessObject;
+import studyorm.DataOperations;
 import studyorm.jpa.models.Customer;
 import studyorm.jpa.models.Order;
 
-public class JpaDao implements DataAccessObject {
+public class JpaOperations implements DataOperations {
     @PersistenceContext
     private EntityManager em;
 
@@ -19,9 +19,6 @@ public class JpaDao implements DataAccessObject {
     	return em;
     }
     
-    /* (non-Javadoc)
-	 * @see studyorm.jpa.DataAccessObject#insert(java.lang.Long, java.lang.String, java.lang.String, java.lang.String, java.util.Date)
-	 */
     @Override
 	public void insert(Long customerId, String customerName, String customerEmail, String orderItem, Date orderedDate) {
     	Customer customer = new Customer(customerId, customerName, customerEmail);
@@ -32,9 +29,6 @@ public class JpaDao implements DataAccessObject {
     	em.flush();
 	}
 
-    /* (non-Javadoc)
-	 * @see studyorm.jpa.DataAccessObject#deleteCustomerByPK(java.lang.Long)
-	 */
     @Override
 	public void deleteCustomerByPK(Long id) {
 		Customer customer = em.find(Customer.class, id);
@@ -42,9 +36,6 @@ public class JpaDao implements DataAccessObject {
     	em.flush();
 	}
 
-    /* (non-Javadoc)
-	 * @see studyorm.jpa.DataAccessObject#deleteOrdersByCustomerName(java.lang.String)
-	 */
     @Override
 	public int deleteOrdersByNameStartWith(String orderNamePrefix) {
 		// from JPA2.1, we can do batch update through CriteriaBuilder
@@ -55,9 +46,6 @@ public class JpaDao implements DataAccessObject {
 			.executeUpdate();
 	}
 
-	/* (non-Javadoc)
-	 * @see studyorm.jpa.DataAccessObject#updateCustomerNameByPk(java.lang.Long, java.lang.String)
-	 */
 	@Override
 	public void updateCustomerNameByPk(Long id, String newCustomerName) {
 		Customer customer = em.find(Customer.class, id);
@@ -66,9 +54,6 @@ public class JpaDao implements DataAccessObject {
     	em.flush();
 	}
 	
-	/* (non-Javadoc)
-	 * @see studyorm.jpa.DataAccessObject#updateOrdersItemByCustomerName(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public int updateOrdersItemOlderThan(Date orderedDate, String newOrderItem) {
 		// from JPA2.1, we can do batch update through CriteriaBuilder
@@ -80,18 +65,12 @@ public class JpaDao implements DataAccessObject {
 			.executeUpdate();
 	}
 	
-	/* (non-Javadoc)
-	 * @see studyorm.jpa.DataAccessObject#queryCustomerNameByPK(java.lang.Long)
-	 */
 	@Override
 	public String queryCustomerNameByPK(Long id) {
 		Customer customer = em.find(Customer.class, id);
 		return customer != null ? customer.getName() : null;
 	}
 
-	/* (non-Javadoc)
-	 * @see studyorm.jpa.DataAccessObject#queryOrderItemsByCustomerEmail(java.lang.String)
-	 */
 	@Override
 	public List<String> queryOrderItemsByCustomerEmail(String customerEmail) {
     	List<Order> orders = 

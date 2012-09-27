@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import studyorm.DataAccessObject;
+import studyorm.DataOperations;
 
-public class SpringJdbcDao implements DataAccessObject {
+public class SpringJdbcOperations implements DataOperations {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
