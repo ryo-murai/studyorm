@@ -14,14 +14,14 @@ import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 
-import studyorm.DataAccessObject;
+import studyorm.DataOperations;
 import studyorm.querydslsql.beans.Customer;
 import studyorm.querydslsql.beans.QCustomer;
 import studyorm.querydslsql.beans.QTorder;
 import studyorm.querydslsql.beans.Torder;
 import static studyorm.querydslsql.springdataext.QueryDslTemplateUtil.*;
 
-public class QueryDslTemplateDto implements DataAccessObject {
+public class QueryDslTemplateOperations implements DataOperations {
 	@Autowired
 	private QueryDslJdbcTemplate template;
 

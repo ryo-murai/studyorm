@@ -9,14 +9,14 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import studyorm.DataAccessObject;
+import studyorm.DataOperations;
 import studyorm.querydslsql.beans.Customer;
 import studyorm.querydslsql.beans.QCustomer;
 import studyorm.querydslsql.beans.QTorder;
 import studyorm.querydslsql.beans.Torder;
 import static studyorm.querydslsql.QueryDslSintaxSupport.*;
 
-public class QueryDslSqlDao implements DataAccessObject {
+public class QueryDslSqlOperations implements DataOperations {
 	@Autowired
 	private DataSource dataSource;
 

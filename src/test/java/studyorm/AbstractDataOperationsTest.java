@@ -20,10 +20,10 @@ import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public abstract class AbstractDtoTest {
+public abstract class AbstractDataOperationsTest {
 
 	@Autowired
-	protected DataAccessObject targetDto;
+	protected DataOperations targetDataOperations;
 
 	@Autowired
 	protected TestHelper helper;
@@ -53,7 +53,7 @@ public abstract class AbstractDtoTest {
 
 	@Test
 	public void insertTest() {
-		targetDto.insert(
+		targetDataOperations.insert(
 					8983352L, 
 					"test insert", 
 					"test@insert.org", 
@@ -63,7 +63,7 @@ public abstract class AbstractDtoTest {
 
 		// assertion
 		List<String> items = 
-				targetDto.queryOrderItemsByCustomerEmail("test@insert.org");
+				targetDataOperations.queryOrderItemsByCustomerEmail("test@insert.org");
 		
 		assertThat(items.size(), is(1));
 		assertThat(items.get(0), is("test new order insertion"));
@@ -72,17 +72,17 @@ public abstract class AbstractDtoTest {
 	@Test
 	public void deleteTest() {
 		long id = 49494343L;
-		targetDto.deleteCustomerByPK(id);
+		targetDataOperations.deleteCustomerByPK(id);
 		
-		assertThat(targetDto.queryCustomerNameByPK(id), nullValue());
+		assertThat(targetDataOperations.queryCustomerNameByPK(id), nullValue());
 	}
 
 	@Test
 	public void deleteBatchTest() {
-		int result = targetDto.deleteOrdersByNameStartWith("R");
+		int result = targetDataOperations.deleteOrdersByNameStartWith("R");
 		assertThat(result, is(2));
 		
-		result = targetDto.deleteOrdersByNameStartWith("no such items");
+		result = targetDataOperations.deleteOrdersByNameStartWith("no such items");
 		assertThat(result, is(0));
 	}
 	
@@ -91,33 +91,33 @@ public abstract class AbstractDtoTest {
 		long id = 20102423L;
 		String newCustomerName = "Sir. Kent Beck";
 
-		targetDto.updateCustomerNameByPk(id, newCustomerName);
+		targetDataOperations.updateCustomerNameByPk(id, newCustomerName);
 		
-		assertThat(targetDto.queryCustomerNameByPK(id), is(newCustomerName));
+		assertThat(targetDataOperations.queryCustomerNameByPK(id), is(newCustomerName));
 	}
 	
 	@Test
 	public void updateBatchTest() {
 		LocalDate date = new LocalDate(2012, 8, 5);
 		String newOrderItem = "NoSQL Distilled";
-		int result = targetDto.updateOrdersItemOlderThan(date.toDate(), newOrderItem);
+		int result = targetDataOperations.updateOrdersItemOlderThan(date.toDate(), newOrderItem);
 
 		assertThat(result, is(4));
 
-		List<String> items = targetDto.queryOrderItemsByCustomerEmail("mfowler@mf.com");
+		List<String> items = targetDataOperations.queryOrderItemsByCustomerEmail("mfowler@mf.com");
 		assertThat(items, hasSize(4));
 		assertThat(items, is(everyItem(is(newOrderItem))));
 	}
 	
 	@Test
 	public void queryTest() {
-		String customerName = targetDto.queryCustomerNameByPK(43509845L);
+		String customerName = targetDataOperations.queryCustomerNameByPK(43509845L);
 		assertThat(customerName, is("martin fowler"));
 	}
 	
 	@Test
 	public void queryManyTest() {
-		List<String> items = targetDto.queryOrderItemsByCustomerEmail("kbeck@kent.com");
+		List<String> items = targetDataOperations.queryOrderItemsByCustomerEmail("kbeck@kent.com");
 
 		assertThat(items, hasSize(4));
 		assertThat(items, is(containsInAnyOrder(

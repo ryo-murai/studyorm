@@ -18,7 +18,7 @@ import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import studyorm.DataAccessObject;
+import studyorm.DataOperations;
 import studyorm.TestHelper;
 
 import com.carrotsearch.junitbenchmarks.BenchmarkRule;
@@ -37,7 +37,7 @@ import com.carrotsearch.junitbenchmarks.annotation.LabelType;
 public class BenchmarkTest {
 
 	@Autowired
-	protected DataAccessObject targetDto;
+	protected DataOperations targetDto;
 
 	@SuppressWarnings("deprecation")
 	@Rule

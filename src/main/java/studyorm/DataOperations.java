@@ -3,7 +3,7 @@ package studyorm;
 import java.util.Date;
 import java.util.List;
 
-public interface DataAccessObject {
+public interface DataOperations {
 	public abstract void insert(Long customerId, String customerName,
 			String customerEmail, String orderItem, Date orderedDate);
 

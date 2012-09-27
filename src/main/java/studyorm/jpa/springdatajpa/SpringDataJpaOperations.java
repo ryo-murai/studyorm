@@ -6,13 +6,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import studyorm.DataAccessObject;
+import studyorm.DataOperations;
 import studyorm.jpa.models.Customer;
 import studyorm.jpa.models.Order;
 import studyorm.jpa.springdatajpa.repositories.CustomerRepository;
 import studyorm.jpa.springdatajpa.repositories.OrderRepository;
 
-public class SpringDataJpaDao implements DataAccessObject {
+public class SpringDataJpaOperations implements DataOperations {
 
 	@Autowired
 	private CustomerRepository customerRepository;

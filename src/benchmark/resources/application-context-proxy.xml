@@ -22,6 +22,6 @@
 
 	<!--  -->
 	<import resource="classpath:application-context-${orm.category:jpa}.xml" />
-	<import resource="classpath:dto-${orm.type:jpa}.xml" />
+	<import resource="classpath:bean-${orm.type:jpa}.xml" />
 
 </beans>
