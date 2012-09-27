@@ -51,11 +51,12 @@ task benchmarkdbscript {
 		writer.writeLine(""" (12112210, 'customer name00000', 'customer00000@example.com')""")
 
 		def origin = 12112210L		
-		(1..29999).each {n ->
+		(1..30020).each {n ->
 			def custId = origin + n
 			def seq = new DecimalFormat('00000').format(n)
 			writer.writeLine(""",(${custId}, 'customer name${seq}', 'customer${seq}@example.com')""")
 		}
+
 		writer.writeLine(""",(98765432, 'no orders customr', 'poorcustomer@example.com');""")
 
 		// -------------------------------
@@ -158,8 +159,10 @@ task benchmarkTest {
 			ant.delete {
 				fileset(dir: targetdbdir, includes: "targetdb.*")
 			}
+
 			copy {
 				from benchmarkdb.ext.outputdir
+				include '**/targetdb.*'
 				into targetdbdir
 			}
 		}
