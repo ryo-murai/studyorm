@@ -141,6 +141,7 @@ task benchmarkTest {
 				"-Dorm.category=${category}",
 				"-Dorm.type=${type}"
 
+			exclude '**/jubsample/*.class'
 			testClassesDir = sourceSets.benchmark.output.classesDir
 			classpath =
 				sourceSets.benchmark.runtimeClasspath +
@@ -175,4 +176,17 @@ task benchmarkTest {
 
 		dependsOn newTask
 	}
+}
+
+task jubtest(type: Test) {
+	exclude '**/benchmark/BenchmarkTest.class'
+	testClassesDir = sourceSets.benchmark.output.classesDir
+	classpath =
+		sourceSets.benchmark.runtimeClasspath +
+		sourceSets.main.resources +
+		sourceSets.test.resources +
+		sourceSets.benchmark.resources
+		
+	testReportDir = new File(buildDir, "reports/jubtest/")
+	testResultsDir = new File(buildDir, "test-results/jubtest/")
 }
