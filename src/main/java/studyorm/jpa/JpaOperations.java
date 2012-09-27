@@ -32,8 +32,10 @@ public class JpaOperations implements DataOperations {
     @Override
 	public void deleteCustomerByPK(Long id) {
 		Customer customer = em.find(Customer.class, id);
-		em.remove(customer);
-    	em.flush();
+		if(customer!=null) {
+			em.remove(customer);
+	    	em.flush();
+		}
 	}
 
     @Override
@@ -49,9 +51,11 @@ public class JpaOperations implements DataOperations {
 	@Override
 	public void updateCustomerNameByPk(Long id, String newCustomerName) {
 		Customer customer = em.find(Customer.class, id);
-		customer.setName(newCustomerName);
-		em.merge(customer);
-    	em.flush();
+		if(customer!=null) {
+			customer.setName(newCustomerName);
+			em.merge(customer);
+	    	em.flush();
+		}
 	}
 	
 	@Override

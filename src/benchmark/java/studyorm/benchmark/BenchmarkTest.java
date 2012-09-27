@@ -43,10 +43,14 @@ public class BenchmarkTest {
 	@Rule
 	public org.junit.rules.MethodRule rule = new BenchmarkRule();
 
+	private long custIdToInsert = 8983352L;
+	
+	private long custIdToDelete = 12142210L;
+
 	@Test
 	public void insert() {
 		targetDto.insert(
-				8983352L, 
+				++custIdToInsert, 
 				"test insert", 
 				"test@insert.org", 
 				"test new order insertion", 
@@ -55,13 +59,13 @@ public class BenchmarkTest {
 
 	@Test
 	public void delete() {
-		targetDto.deleteCustomerByPK(98765432L);
+		targetDto.deleteCustomerByPK(++custIdToDelete);
 	}
 
 	@Test
 	public void deleteBatch() {
 		@SuppressWarnings("unused")
-		int result = targetDto.deleteOrdersByNameStartWith("ItemName00");
+		int result = targetDto.deleteOrdersByNameStartWith("ItemName0000");
 	}
 
 	@Test
@@ -71,12 +75,12 @@ public class BenchmarkTest {
 
 	@Test
 	public void updateBatch() {
-		LocalDate date = new LocalDate(2012, 8, 15);
+		LocalDate date = new LocalDate(2012, 8, 2);
 		String newOrderItem = "ItemName99999";
 
 		@SuppressWarnings("unused")
 		int result = targetDto.updateOrdersItemOlderThan(date.toDate(), newOrderItem);
-		// approx 50% of records of order
+		// approx 5% of records of order
 	}
 
 	@Test
