@@ -18,17 +18,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import studyorm.AbstractDtoTest;
+import studyorm.AbstractDataOperationsTest;
 import studyorm.querydslsql.beans.Customer;
 import studyorm.querydslsql.beans.QCustomer;
 import studyorm.querydslsql.beans.QTorder;
 import static studyorm.querydslsql.QueryDslSintaxSupport.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/application-context-jdbc.xml", "/dto-jdbc-querydsl.xml"})
+@ContextConfiguration(locations = {"/application-context-jdbc.xml", "/bean-jdbc-querydsl.xml"})
 @TransactionConfiguration
 @Transactional
-public class QueryDslSqlTest extends AbstractDtoTest {
+public class QueryDslSqlTest extends AbstractDataOperationsTest {
 	@Autowired
 	private DataSource dataSource;
 

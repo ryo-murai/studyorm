@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import studyorm.DataAccessObject;
-import studyorm.jpa.JpaDao;
+import studyorm.DataOperations;
+import studyorm.jpa.JpaOperations;
 import studyorm.jpa.models.QCustomer;
 import studyorm.jpa.models.QOrder;
 
@@ -13,7 +13,7 @@ import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.jpa.impl.JPAQuery;
 
-public class QueryDslJpaDao extends JpaDao implements DataAccessObject {
+public class QueryDslJpaOperations extends JpaOperations implements DataOperations {
 	@Autowired
 	private JPQLTemplates jpqlTemplates;
 	

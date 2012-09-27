@@ -3,11 +3,12 @@ studyorm
 just comparing some Object-Relational-Mapping Tools and Libraries in Java.
 
 ## libraries used
-- Java Persistence API
-- Spring DATA JPA
-- QueryDsl(JPA)
-- QueryDsl(SQL)
-- Spring DATA JDBC Extension
+- [Java Persistence API 2.0](http://jcp.org/en/jsr/detail?id=317)
+- [Spring DATA JPA](http://www.springsource.org/spring-data/jpa)
+- [QueryDsl(JPA)](http://www.querydsl.com/)
+- [QueryDsl(SQL)](http://www.querydsl.com/)
+- [Spring JDBC](http://static.springsource.org/spring/docs/current/spring-framework-reference/html/jdbc.html)
+- [Spring DATA JDBC Extension](http://www.springsource.org/spring-data/jdbc-extensions)
 
 ## database schema
 - see [create-tables.sql](https://github.com/ryo-murai/studyorm/blob/master/src/main/resources/sql/create-tables.sql)
@@ -21,21 +22,17 @@ just comparing some Object-Relational-Mapping Tools and Libraries in Java.
 - query
 - joined query
 
-## source codes using ORM
-- to be described
+## example source codes using ORMs
+- [Java Persistence API 2.0](https://github.com/ryo-murai/studyorm/blob/master/src/main/java/studyorm/jpa/JpaOperations.java)
+- [Spring DATA JPA](https://github.com/ryo-murai/studyorm/blob/master/src/main/java/studyorm/jpa/springdatajpa/SpringDataJpaOperations.java)
+- [QueryDsl(JPA)](https://github.com/ryo-murai/studyorm/blob/master/src/main/java/studyorm/jpa/querydsl/QueryDslJpaOperations.java)
+- [QueryDsl(SQL)](https://github.com/ryo-murai/studyorm/blob/master/src/main/java/studyorm/querydslsql/QueryDslSqlOperations.java)
+- [Spring JDBC](https://github.com/ryo-murai/studyorm/blob/master/src/main/java/studyorm/springjdbc/SpringJdbcOperations.java)
+- [Spring DATA JDBC Extension](https://github.com/ryo-murai/studyorm/blob/master/src/main/java/studyorm/querydslsql/springdataext/QueryDslTemplateOperations.java)
 
 ## micro benchmarking
-- using [junit-benchmarks](http://labs.carrotsearch.com/junit-benchmarks.html)
-- HSQLDB in-memory database
-- 2,000 records of Customer and 4,000 records of Order.
-- Visualized results can be referred in this [link](https://raw.github.com/gist/bd9473d242493c574771/5f336d76ad96dcceb51d7fb965546ccbdda1f88f/BenchmarkTest.html)
-### execution environment
-- Windows 7 64bit
-- Celeron Dual-Core SU2300 1.2GHz/2Cores
-- RAM 4GB
-- JDK 7
+- recorded and visualized using [junit-benchmarks](http://labs.carrotsearch.com/junit-benchmarks.html)
+- see this [gist](https://gist.github.com/bd9473d242493c574771)
 
 ## TODO
-- Add "Spring Data JDBC"
-- Use file database to do benchmarking with more large amount of data records
-- compare more complex operations
+- compare more data manipulation operations like large objects, etc...

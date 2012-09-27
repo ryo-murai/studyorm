@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import studyorm.AbstractDtoTest;
+import studyorm.AbstractDataOperationsTest;
 import studyorm.jpa.models.Customer;
 import studyorm.jpa.models.Order;
 import studyorm.jpa.models.QCustomer;
@@ -26,10 +26,10 @@ import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/application-context-jpa.xml", "/dto-jpa-querydsl.xml"})
+@ContextConfiguration(locations={"/application-context-jpa.xml", "/bean-jpa-querydsl.xml"})
 @TransactionConfiguration
 @Transactional
-public class QueryDslJpaTest extends AbstractDtoTest {
+public class QueryDslJpaTest extends AbstractDataOperationsTest {
 	@PersistenceContext
     private EntityManager em;
 
