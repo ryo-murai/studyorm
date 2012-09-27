@@ -6,5 +6,5 @@
     http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-	<bean id="dtobean" class="studyorm.querydslsql.springdataext.QueryDslTemplateDto" />
+	<bean id="dtobean" class="studyorm.springjdbc.SpringJdbcDao" />
 </beans>

@@ -29,43 +29,19 @@ import com.carrotsearch.junitbenchmarks.annotation.LabelType;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/application-context-proxy.xml")
-@TransactionConfiguration
+@TransactionConfiguration(defaultRollback=false)
 @Transactional
 @AxisRange(min = 0, max = 1)
 @BenchmarkMethodChart(filePrefix = "build/reports/benchmarks/benchmark")
-@BenchmarkHistoryChart(filePrefix = "build/reports/benchmarks/BenchmarkTest", labelWith = LabelType.CUSTOM_KEY, maxRuns = 20)
+@BenchmarkHistoryChart(filePrefix = "build/reports/benchmarks/BenchmarkTest", labelWith = LabelType.CUSTOM_KEY, maxRuns = 6)
 public class BenchmarkTest {
 
 	@Autowired
 	protected DataAccessObject targetDto;
 
-	@Autowired
-	protected TestHelper helper;
-
-	@Value("${classpath:/sql/create-tables.sql}")
-	private Resource createTablesSql;
-
-	// TODO: less logging configuration
-	@Value("${classpath:/sql/insert-6k.sql}")
-	private Resource insertRecordsSql;
-
-	@Value("${classpath:/sql/drop-tables.sql}")
-	private Resource dropTablesSql;
-
 	@SuppressWarnings("deprecation")
 	@Rule
 	public org.junit.rules.MethodRule rule = new BenchmarkRule();
-
-	@BeforeTransaction
-	public void setupDatabase() {
-		helper.runSqlScriptIgnoreError(createTablesSql);
-		helper.runSqlScript(insertRecordsSql);
-	}
-
-	@AfterTransaction
-	public void tearDownDatabase() {
-		helper.runSqlScriptIgnoreError(dropTablesSql);
-	}
 
 	@Test
 	public void insert() {
@@ -85,7 +61,7 @@ public class BenchmarkTest {
 	@Test
 	public void deleteBatch() {
 		@SuppressWarnings("unused")
-		int result = targetDto.deleteOrdersByNameStartWith("ItemName0");
+		int result = targetDto.deleteOrdersByNameStartWith("ItemName00");
 	}
 
 	@Test
@@ -95,11 +71,12 @@ public class BenchmarkTest {
 
 	@Test
 	public void updateBatch() {
-		LocalDate date = new LocalDate();
-		String newOrderItem = "ItemName9999";
+		LocalDate date = new LocalDate(2012, 8, 15);
+		String newOrderItem = "ItemName99999";
 
 		@SuppressWarnings("unused")
-		int result = targetDto.updateOrdersItemOlderThan(date.toDate(), newOrderItem);		
+		int result = targetDto.updateOrdersItemOlderThan(date.toDate(), newOrderItem);
+		// approx 50% of records of order
 	}
 
 	@Test
@@ -111,6 +88,7 @@ public class BenchmarkTest {
 	@Test
 	public void queryMany() {
 		@SuppressWarnings("unused")
-		List<String> items = targetDto.queryOrderItemsByCustomerEmail("customer2000@example.com");
+		List<String> items = targetDto.queryOrderItemsByCustomerEmail("customer20000@example.com");
+		// 2 records of order
 	}
 }

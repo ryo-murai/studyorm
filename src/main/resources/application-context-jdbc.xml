@@ -33,6 +33,10 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
+	<bean class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg ref="dataSource" />
+	</bean>
+
 	<!-- QueryDslJdbcTemplate の設定 -->
 	<bean class="org.springframework.data.jdbc.query.QueryDslJdbcTemplate">
 		<constructor-arg ref="dataSource" />
