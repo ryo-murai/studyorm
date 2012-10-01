@@ -8,7 +8,7 @@ import studyorm.jpa.models.Customer;
 
 @Repository
 public interface CustomerRepository
-		extends
-			JpaRepository<Customer, Long>,
-			JpaSpecificationExecutor<Customer> {
+        extends
+        JpaRepository<Customer, Long>,
+        JpaSpecificationExecutor<Customer> {
 }

@@ -16,36 +16,36 @@ import com.carrotsearch.junitbenchmarks.annotation.BenchmarkMethodChart;
 import com.carrotsearch.junitbenchmarks.annotation.LabelType;
 
 public class MeasurementTest {
-	@SuppressWarnings("deprecation")
-	@Rule
-	public org.junit.rules.MethodRule rule = new BenchmarkRule();
+    @SuppressWarnings("deprecation")
+    @Rule
+    public org.junit.rules.MethodRule rule = new BenchmarkRule();
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		Thread.sleep(1000);
-	}
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+        Thread.sleep(1000);
+    }
 
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-		Thread.sleep(2000);
-	}
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception {
+        Thread.sleep(2000);
+    }
 
-	@Before
-	public void setUp() throws Exception {
-		Thread.sleep(300);
-	}
+    @Before
+    public void setUp() throws Exception {
+        Thread.sleep(300);
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		Thread.sleep(500);
-	}
+    @After
+    public void tearDown() throws Exception {
+        Thread.sleep(500);
+    }
 
-	@Test
-	public void test0() throws Exception {
-	}
+    @Test
+    public void test0() throws Exception {
+    }
 
-	@Test
-	public void test70() throws Exception {
-		Thread.sleep(70);
-	}
+    @Test
+    public void test70() throws Exception {
+        Thread.sleep(70);
+    }
 }

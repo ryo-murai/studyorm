@@ -121,9 +121,8 @@ task codeFormat(type: Exec) {
   commandLine 'cmd', '/c', eclipseIdeExePath, 
     '-application', 'org.eclipse.jdt.core.JavaCodeFormatter', 
     '-vm', System.properties['java.home'] + "/bin/java",
-    '-verbose', 
-    '-config',
-    new File(workConfDir, confName).absolutePath,
+    '-verbose', '-nosplash',
+    '-config', new File(workConfDir, confName).absolutePath,
     'src'
 
   doFirst {

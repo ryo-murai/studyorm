@@ -26,34 +26,34 @@ import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/application-context-jpa.xml",
-		"/bean-jpa-querydsl.xml"})
+@ContextConfiguration(locations = { "/application-context-jpa.xml",
+        "/bean-jpa-querydsl.xml" })
 @TransactionConfiguration
 @Transactional
 public class QueryDslJpaTest extends AbstractDataOperationsTest {
-	@PersistenceContext
-	private EntityManager em;
+    @PersistenceContext
+    private EntityManager em;
 
-	@Test
-	public void testQuerySingle() {
+    @Test
+    public void testQuerySingle() {
 
-		// "select c from Customer c where c.name = :customerName"
-		JPQLQuery query = new JPAQuery(em, EclipseLinkTemplates.DEFAULT);
-		QCustomer c = QCustomer.customer;
-		Customer customer = query.from(c).where(c.name.eq("martin fowler"))
-				.uniqueResult(c);
-		assertEquals("martin fowler", customer.getName());
-	}
+        // "select c from Customer c where c.name = :customerName"
+        JPQLQuery query = new JPAQuery(em, EclipseLinkTemplates.DEFAULT);
+        QCustomer c = QCustomer.customer;
+        Customer customer = query.from(c).where(c.name.eq("martin fowler"))
+                .uniqueResult(c);
+        assertEquals("martin fowler", customer.getName());
+    }
 
-	@Test
-	public void testQueryMany() {
+    @Test
+    public void testQueryMany() {
 
-		// "select o from Order o join o.customer c where c.name = :customerName"
-		JPQLQuery query = new JPAQuery(em, HQLTemplates.DEFAULT);
-		QOrder o = QOrder.order;
-		List<Order> orders = query.from(o)
-				.where(o.customer.name.eq("martin fowler")).list(o);
-		assertEquals(4, orders.size());
-		assertEquals("martin fowler", orders.get(0).getCustomer().getName());
-	}
+        // "select o from Order o join o.customer c where c.name = :customerName"
+        JPQLQuery query = new JPAQuery(em, HQLTemplates.DEFAULT);
+        QOrder o = QOrder.order;
+        List<Order> orders = query.from(o)
+                .where(o.customer.name.eq("martin fowler")).list(o);
+        assertEquals(4, orders.size());
+        assertEquals("martin fowler", orders.get(0).getCustomer().getName());
+    }
 }
