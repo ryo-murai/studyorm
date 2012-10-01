@@ -25,7 +25,8 @@ import studyorm.querydslsql.beans.QTorder;
 import static studyorm.querydslsql.QueryDslSintaxSupport.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/application-context-jdbc.xml", "/bean-jdbc-querydsl.xml"})
+@ContextConfiguration(locations = {"/application-context-jdbc.xml",
+		"/bean-jdbc-querydsl.xml"})
 @TransactionConfiguration
 @Transactional
 public class QueryDslSqlTest extends AbstractDataOperationsTest {
@@ -39,9 +40,7 @@ public class QueryDslSqlTest extends AbstractDataOperationsTest {
 	public void testSingleCustomerQuery() throws Throwable {
 		Connection con = dataSource.getConnection();
 		try {
-			Customer aCustomer =
-				queryDsl(con)
-					.queryFrom(customer)
+			Customer aCustomer = queryDsl(con).queryFrom(customer)
 					.where(customer.custId.eq(43509845L))
 					.uniqueResult(customer);
 			assertNotNull(aCustomer);
@@ -55,15 +54,15 @@ public class QueryDslSqlTest extends AbstractDataOperationsTest {
 	public void testJoinQuery() throws Throwable {
 		Connection con = dataSource.getConnection();
 		try {
-			List<String> orderItems = queryDsl(con).queryFrom(order).innerJoin(customer)
-					.on(order.custId.eq(customer.custId))
+			List<String> orderItems = queryDsl(con).queryFrom(order)
+					.innerJoin(customer).on(order.custId.eq(customer.custId))
 					.where(customer.name.eq("martin fowler")).list(order.item);
 
 			assertEquals(4, orderItems.size());
 			assertThat(
 					orderItems,
-					hasItems("PoEAA", "Domain Specific Languages", "Refactoring",
-							"UML Distilled"));
+					hasItems("PoEAA", "Domain Specific Languages",
+							"Refactoring", "UML Distilled"));
 		} finally {
 			con.close();
 		}

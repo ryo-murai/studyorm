@@ -10,9 +10,10 @@ import javax.persistence.Id;
 public class Customer implements Serializable {
 
 	private static final long serialVersionUID = 8620973559393647791L;
-	
-	public Customer() {}
-	
+
+	public Customer() {
+	}
+
 	public Customer(Long id, String name, String email) {
 		this.id = id;
 		this.name = name;
@@ -20,17 +21,17 @@ public class Customer implements Serializable {
 	}
 
 	@Id
-	@Column(name="CUST_ID")
+	@Column(name = "CUST_ID")
 	private Long id;
-	
+
 	private String name;
-	
+
 	private String email;
-	
+
 	public Long getId() {
 		return id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}

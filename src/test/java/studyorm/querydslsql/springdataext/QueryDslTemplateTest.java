@@ -24,7 +24,8 @@ import studyorm.querydslsql.beans.QTorder;
 import com.mysema.query.sql.SQLQuery;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/application-context-jdbc.xml", "/bean-jdbc-springext-querydsl.xml"})
+@ContextConfiguration(locations = {"/application-context-jdbc.xml",
+		"/bean-jdbc-springext-querydsl.xml"})
 @TransactionConfiguration
 @Transactional
 public class QueryDslTemplateTest extends AbstractDataOperationsTest {
@@ -34,13 +35,11 @@ public class QueryDslTemplateTest extends AbstractDataOperationsTest {
 	@Test
 	public void testSingleCustomerQuery() throws Throwable {
 		final QCustomer customer = QCustomer.customer;
-		SQLQuery getCustomer =
-				template.newSqlQuery()
-				.from(customer)
+		SQLQuery getCustomer = template.newSqlQuery().from(customer)
 				.where(customer.custId.eq(43509845L));
-		
-		Customer aCustomer = 
-				template.queryForObject(getCustomer, mapping(Customer.class, customer));
+
+		Customer aCustomer = template.queryForObject(getCustomer,
+				mapping(Customer.class, customer));
 
 		assertEquals("martin fowler", aCustomer.getName());
 	}
@@ -49,16 +48,16 @@ public class QueryDslTemplateTest extends AbstractDataOperationsTest {
 	public void testJoinQuery() throws Throwable {
 		final QTorder order = QTorder.torder;
 		QCustomer customer = QCustomer.customer;
-		SQLQuery getOrders =
-			template.newSqlQuery()
-				.from(order)
-				.innerJoin(customer)
-					.on(order.custId.eq(customer.custId))
+		SQLQuery getOrders = template.newSqlQuery().from(order)
+				.innerJoin(customer).on(order.custId.eq(customer.custId))
 				.where(customer.name.eq("martin fowler"));
 
-		List<String> orderItems =
-		template.query(getOrders, mapping(String.class, order.item));
+		List<String> orderItems = template.query(getOrders,
+				mapping(String.class, order.item));
 		assertEquals(4, orderItems.size());
-		assertThat(orderItems, hasItems("PoEAA", "Domain Specific Languages", "Refactoring", "UML Distilled"));
+		assertThat(
+				orderItems,
+				hasItems("PoEAA", "Domain Specific Languages", "Refactoring",
+						"UML Distilled"));
 	}
 }

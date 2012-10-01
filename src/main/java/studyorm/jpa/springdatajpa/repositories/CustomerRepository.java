@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import studyorm.jpa.models.Customer;
 
 @Repository
-public interface CustomerRepository 
-	extends JpaRepository<Customer, Long>, JpaSpecificationExecutor<Customer> {
+public interface CustomerRepository
+		extends
+			JpaRepository<Customer, Long>,
+			JpaSpecificationExecutor<Customer> {
 }

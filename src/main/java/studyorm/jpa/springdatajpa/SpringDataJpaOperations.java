@@ -16,15 +16,16 @@ public class SpringDataJpaOperations implements DataOperations {
 
 	@Autowired
 	private CustomerRepository customerRepository;
-	
+
 	@Autowired
 	private OrderRepository orderRepository;
-	
+
 	@Override
 	public void insert(Long customerId, String customerName,
 			String customerEmail, String orderItem, Date orderedDate) {
 
-		Customer customer = customerRepository.save(new Customer(customerId, customerName, customerEmail));
+		Customer customer = customerRepository.save(new Customer(customerId,
+				customerName, customerEmail));
 		orderRepository.save(new Order(orderItem, orderedDate, customer));
 	}
 
@@ -35,7 +36,7 @@ public class SpringDataJpaOperations implements DataOperations {
 
 	@Override
 	public int deleteOrdersByNameStartWith(String orderNamePrefix) {
-    return orderRepository.deleteItemStartingWith(orderNamePrefix);
+		return orderRepository.deleteItemStartingWith(orderNamePrefix);
 	}
 
 	@Override
@@ -60,7 +61,7 @@ public class SpringDataJpaOperations implements DataOperations {
 	public List<String> queryOrderItemsByCustomerEmail(String customerEmail) {
 		List<Order> orders = orderRepository.findByCustomerEmail(customerEmail);
 		List<String> items = new ArrayList<String>();
-		for(Order order : orders) {
+		for (Order order : orders) {
 			items.add(order.getItem());
 		}
 		return items;

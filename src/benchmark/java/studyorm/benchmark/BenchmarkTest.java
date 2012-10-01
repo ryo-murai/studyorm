@@ -29,7 +29,7 @@ import com.carrotsearch.junitbenchmarks.annotation.LabelType;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/application-context-proxy.xml")
-@TransactionConfiguration(defaultRollback=false)
+@TransactionConfiguration(defaultRollback = false)
 @Transactional
 @AxisRange(min = 0, max = 1)
 @BenchmarkMethodChart(filePrefix = "build/reports/benchmarks/benchmark")
@@ -44,17 +44,13 @@ public class BenchmarkTest {
 	public org.junit.rules.MethodRule rule = new BenchmarkRule();
 
 	private long custIdToInsert = 8983352L;
-	
+
 	private long custIdToDelete = 12142210L;
 
 	@Test
 	public void insert() {
-		targetDto.insert(
-				++custIdToInsert, 
-				"test insert", 
-				"test@insert.org", 
-				"test new order insertion", 
-				new Date(1234567L));
+		targetDto.insert(++custIdToInsert, "test insert", "test@insert.org",
+				"test new order insertion", new Date(1234567L));
 	}
 
 	@Test
@@ -79,7 +75,8 @@ public class BenchmarkTest {
 		String newOrderItem = "ItemName99999";
 
 		@SuppressWarnings("unused")
-		int result = targetDto.updateOrdersItemOlderThan(date.toDate(), newOrderItem);
+		int result = targetDto.updateOrdersItemOlderThan(date.toDate(),
+				newOrderItem);
 		// approx 5% of records of order
 	}
 
@@ -92,7 +89,8 @@ public class BenchmarkTest {
 	@Test
 	public void queryMany() {
 		@SuppressWarnings("unused")
-		List<String> items = targetDto.queryOrderItemsByCustomerEmail("customer20000@example.com");
+		List<String> items = targetDto
+				.queryOrderItemsByCustomerEmail("customer20000@example.com");
 		// 2 records of order
 	}
 }

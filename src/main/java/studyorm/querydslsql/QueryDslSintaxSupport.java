@@ -36,43 +36,44 @@ public class QueryDslSintaxSupport {
 		return query().from(o);
 	}
 
-	public SQLInsertClause insertInto(RelationalPath<?> o)  {
+	public SQLInsertClause insertInto(RelationalPath<?> o) {
 		return new SQLInsertClause(getConnection(), getDialect(), o);
 	}
-	
+
 	public SQLUpdateClause update(RelationalPath<?> o) {
 		return new SQLUpdateClause(getConnection(), getDialect(), o);
 	}
-	
+
 	public SQLDeleteClause delete(RelationalPath<?> o) {
 		return new SQLDeleteClause(getConnection(), getDialect(), o);
 	}
 
-	
 	protected Connection getConnection() {
 		return conn;
 	}
-	
+
 	protected SQLTemplates getDialect() {
 		return createDialect(getConnection());
 	}
-	
+
 	private static SQLTemplates createDialect(Connection connection) {
 		try {
-			DatabaseType dbType = DatabaseType.fromProductName(connection.getMetaData().getDatabaseProductName());
-			switch(dbType) {
-			case HSQL: 
-				return new HSQLDBTemplates();
-			case POSTGRES: 
-				return new PostgresTemplates();
-			case MYSQL: 
-				return new MySQLTemplates();
-			case ORACLE: 
-				return new OracleTemplates();
-			// other database management systems are also available, but
-			// yet implemented in this class.
-			default: 
-				throw new IllegalArgumentException(dbType+" is not supported or implemented");
+			DatabaseType dbType = DatabaseType.fromProductName(connection
+					.getMetaData().getDatabaseProductName());
+			switch (dbType) {
+				case HSQL :
+					return new HSQLDBTemplates();
+				case POSTGRES :
+					return new PostgresTemplates();
+				case MYSQL :
+					return new MySQLTemplates();
+				case ORACLE :
+					return new OracleTemplates();
+					// other database management systems are also available, but
+					// yet implemented in this class.
+				default :
+					throw new IllegalArgumentException(dbType
+							+ " is not supported or implemented");
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

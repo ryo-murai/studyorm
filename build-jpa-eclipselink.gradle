@@ -1,18 +1,18 @@
 configurations {
-    instrument {description 'classpath for instrument as java agent'}
+  instrument {description 'classpath for instrument as java agent'}
 }
 
 dependencies {
-    def springFwVer = '3.1.2.RELEASE'
+  def springFwVer = '3.1.2.RELEASE'
 
-    instrument "org.springframework:spring-instrument:$springFwVer"
+  instrument "org.springframework:spring-instrument:$springFwVer"
 
-    compile 'org.eclipse.persistence:javax.persistence:2.0.0'
-    runtime ('org.eclipse.persistence:eclipselink:2.4.0') {
-      exclude group: 'commonj.sdo', module: 'commonj.sdo'
-    }
+  compile 'org.eclipse.persistence:javax.persistence:2.0.0'
+  runtime ('org.eclipse.persistence:eclipselink:2.4.0') {
+    exclude group: 'commonj.sdo', module: 'commonj.sdo'
+  }
 }
 
 test {
-	jvmArgs "-javaagent:$configurations.instrument.singleFile"
+  jvmArgs "-javaagent:$configurations.instrument.singleFile"
 }

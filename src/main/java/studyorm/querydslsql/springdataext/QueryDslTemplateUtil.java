@@ -8,8 +8,9 @@ import com.mysema.query.types.MappingProjection;
 
 public class QueryDslTemplateUtil {
 	@SuppressWarnings("serial")
-	public static <T> MappingProjection<T> mapping(Class<T> type, final Expression<T> exp) {
-		return new MappingProjection<T>(type, exp){
+	public static <T> MappingProjection<T> mapping(Class<T> type,
+			final Expression<T> exp) {
+		return new MappingProjection<T>(type, exp) {
 			@Override
 			protected T map(Tuple row) {
 				return row.get(exp);

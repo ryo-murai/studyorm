@@ -35,7 +35,8 @@ public class TestHelper {
 	}
 
 	public void runSqlScript(Resource script, boolean continueOnFailure) {
-		SimpleJdbcTestUtils.executeSqlScript(getTemplate(), script, continueOnFailure);
+		SimpleJdbcTestUtils.executeSqlScript(getTemplate(), script,
+				continueOnFailure);
 	}
 
 	public static <T> TestRule getLoggingRule(Class<T> loggerSourceType) {
