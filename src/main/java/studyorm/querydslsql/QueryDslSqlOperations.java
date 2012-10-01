@@ -35,16 +35,12 @@ public class QueryDslSqlOperations implements DataOperations {
 		newOrder.setDate(toSql(orderedDate));
 		newOrder.setItem(orderItem);
 		// orderId is automatically identified by database.
-		
+
 		Connection con = getConnection();
 		try {
-			queryDsl(con).insertInto(customer)
-				.populate(newCustomer)
-				.execute();
-	
-			queryDsl(con).insertInto(order)
-				.populate(newOrder)
-				.execute();
+			queryDsl(con).insertInto(customer).populate(newCustomer).execute();
+
+			queryDsl(con).insertInto(order).populate(newOrder).execute();
 		} finally {
 			close(con);
 		}
@@ -54,10 +50,8 @@ public class QueryDslSqlOperations implements DataOperations {
 	public void deleteCustomerByPK(Long id) {
 		Connection con = getConnection();
 		try {
-			queryDsl(con)
-				.delete(customer)
-				.where(customer.custId.eq(id))
-				.execute();
+			queryDsl(con).delete(customer).where(customer.custId.eq(id))
+					.execute();
 		} finally {
 			close(con);
 		}
@@ -67,10 +61,8 @@ public class QueryDslSqlOperations implements DataOperations {
 	public int deleteOrdersByNameStartWith(String orderNamePrefix) {
 		Connection con = getConnection();
 		try {
-			return (int)
-				queryDsl(con).delete(order)
-					.where(order.item.startsWith(orderNamePrefix))
-					.execute();
+			return (int) queryDsl(con).delete(order)
+					.where(order.item.startsWith(orderNamePrefix)).execute();
 		} finally {
 			close(con);
 		}
@@ -80,10 +72,8 @@ public class QueryDslSqlOperations implements DataOperations {
 	public void updateCustomerNameByPk(Long id, String newCustomerName) {
 		Connection con = getConnection();
 		try {
-			queryDsl(con).update(customer)
-				.where(customer.custId.eq(id))
-				.set(customer.name, newCustomerName)
-				.execute();
+			queryDsl(con).update(customer).where(customer.custId.eq(id))
+					.set(customer.name, newCustomerName).execute();
 		} finally {
 			close(con);
 		}
@@ -93,11 +83,9 @@ public class QueryDslSqlOperations implements DataOperations {
 	public int updateOrdersItemOlderThan(Date orderedDate, String newOrderItem) {
 		Connection con = getConnection();
 		try {
-			return (int)
-			queryDsl(con).update(order)
-				.where(order.date.before(toSql(orderedDate)))
-				.set(order.item, newOrderItem)
-				.execute();
+			return (int) queryDsl(con).update(order)
+					.where(order.date.before(toSql(orderedDate)))
+					.set(order.item, newOrderItem).execute();
 		} finally {
 			close(con);
 		}
@@ -107,10 +95,8 @@ public class QueryDslSqlOperations implements DataOperations {
 	public String queryCustomerNameByPK(Long id) {
 		Connection con = getConnection();
 		try {
-			return queryDsl(con)
-					.queryFrom(customer)
-					.where(customer.custId.eq(id))
-					.uniqueResult(customer.name);
+			return queryDsl(con).queryFrom(customer)
+					.where(customer.custId.eq(id)).uniqueResult(customer.name);
 		} finally {
 			close(con);
 		}
@@ -120,12 +106,9 @@ public class QueryDslSqlOperations implements DataOperations {
 	public List<String> queryOrderItemsByCustomerEmail(String customerEmail) {
 		Connection con = getConnection();
 		try {
-			return queryDsl(con)
-					.queryFrom(order)
-						.innerJoin(customer)
-						.on(order.custId.eq(customer.custId))
-					.where(customer.email.eq(customerEmail))
-					.list(order.item);
+			return queryDsl(con).queryFrom(order).innerJoin(customer)
+					.on(order.custId.eq(customer.custId))
+					.where(customer.email.eq(customerEmail)).list(order.item);
 		} finally {
 			close(con);
 		}
@@ -138,7 +121,7 @@ public class QueryDslSqlOperations implements DataOperations {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	private void close(Connection connection) {
 		try {
 			connection.close();

@@ -17,89 +17,121 @@ tasks.withType(AbstractCompile) each { encoding it.options }
 // --------------------------------------------------------------
 def springFwVer = '3.1.2.RELEASE'
 def querydslVer = '2.7.2'
-def slf4jVer    = '1.6.6'
-def hsqldbVer   = '2.2.8'
+def slf4jVer  = '1.6.6'
+def hsqldbVer = '2.2.8'
 
 configurations {
-    processor  {description 'classpath for annotation processors'}
-	qbeangen   {description 'classpath for QModel generator'}
+  processor  {description 'classpath for annotation processors'}
+  qbeangen   {description 'classpath for QModel generator'}
 
-	// prevent milestone version of springframework modules
-	//  all springframework modules may be transitively resolved 
-	//  from milestone repository where we could obtain the
-	//  spring-data-jdbc-core module
-    // TODO: remote this when spring-data-jdbc-core is available at central
-	all {
-		resolutionStrategy {
-			force   "org.springframework:spring-core:$springFwVer", 
-					"org.springframework:spring-beans:$springFwVer", 
-					"org.springframework:spring-jdbc:$springFwVer",
-					"org.springframework:spring-orm:$springFwVer",
-					"org.springframework:spring-aop:$springFwVer",
-					"org.springframework:spring-context:$springFwVer",
-					"org.springframework:spring-tx:$springFwVer",
-					"org.springframework:spring-expression:$springFwVer"
-		}
-	}
+  // prevent milestone version of springframework modules
+  //  all springframework modules may be transitively resolved 
+  //  from milestone repository where we could obtain the
+  //  spring-data-jdbc-core module
+  // TODO: remove this when spring-data-jdbc-core is available at central
+  all {
+    resolutionStrategy {
+      force "org.springframework:spring-core:$springFwVer", 
+          "org.springframework:spring-beans:$springFwVer", 
+          "org.springframework:spring-jdbc:$springFwVer",
+          "org.springframework:spring-orm:$springFwVer",
+          "org.springframework:spring-aop:$springFwVer",
+          "org.springframework:spring-context:$springFwVer",
+          "org.springframework:spring-tx:$springFwVer",
+          "org.springframework:spring-expression:$springFwVer"
+    }
+  }
 }
 
 repositories {
-    mavenCentral()
-    
-    // this repository is to obtain the spring-data-jdbc-core 
-    // TODO: remote this when spring-data-jdbc-core is available at central
-    mavenRepo(url: 'http://maven.springframework.org/milestone')
+  mavenCentral()
+  
+  // this repository is to obtain the spring-data-jdbc-core 
+  // TODO: remote this when spring-data-jdbc-core is available at central
+  mavenRepo(url: 'http://maven.springframework.org/milestone')
 }
 
 dependencies {
-    compile "org.slf4j:slf4j-api:$slf4jVer"
-    compile 'joda-time:joda-time:2.1'
+  compile "org.slf4j:slf4j-api:$slf4jVer"
+  compile 'joda-time:joda-time:2.1'
 
-	// ---------------------------------------------------------------
-	// jpa compilation dependencies
-	// ---------------------------------------------------------------
-	compile 'org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final'
+  // ---------------------------------------------------------------
+  // jpa compilation dependencies
+  // ---------------------------------------------------------------
+  compile 'org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final'
 
-    compile "org.springframework:spring-core:$springFwVer"
-    compile "org.springframework:spring-orm:$springFwVer"
-	compile 'org.springframework.data:spring-data-jpa:1.1.2.RELEASE'
-    compile "com.mysema.querydsl:querydsl-jpa:$querydslVer"
+  compile "org.springframework:spring-core:$springFwVer"
+  compile "org.springframework:spring-orm:$springFwVer"
+  compile 'org.springframework.data:spring-data-jpa:1.1.2.RELEASE'
+  compile "com.mysema.querydsl:querydsl-jpa:$querydslVer"
 
-    processor "com.mysema.querydsl:querydsl-apt:$querydslVer"
+  processor "com.mysema.querydsl:querydsl-apt:$querydslVer"
 
-	// ---------------------------------------------------------------
-	// jdbc compilation dependencies
-	// ---------------------------------------------------------------
-    compile "com.mysema.querydsl:querydsl-sql:$querydslVer"
-    compile "org.springframework:spring-core:$springFwVer"
-    compile "org.springframework:spring-beans:$springFwVer"
-    compile "org.springframework:spring-jdbc:$springFwVer"
-    compile('org.springframework.data:spring-data-jdbc-core:1.0.0.RC3') {
-    	exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+  // ---------------------------------------------------------------
+  // jdbc compilation dependencies
+  // ---------------------------------------------------------------
+  compile "com.mysema.querydsl:querydsl-sql:$querydslVer"
+  compile "org.springframework:spring-core:$springFwVer"
+  compile "org.springframework:spring-beans:$springFwVer"
+  compile "org.springframework:spring-jdbc:$springFwVer"
+  compile('org.springframework.data:spring-data-jdbc-core:1.0.0.RC3') {
+    exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+  }
+
+  qbeangen "com.mysema.querydsl:querydsl-sql-codegen:$querydslVer"
+
+  // ---------------------------------------------------------------
+  // runtime dependencies
+  // ---------------------------------------------------------------
+  runtime 'ch.qos.logback:logback-classic:1.0.6'
+  runtime 'org.aspectj:aspectjweaver:1.6.12'
+  runtime 'commons-dbcp:commons-dbcp:1.4'
+
+  // jpa runtime dependencies
+  runtime 'org.hibernate:hibernate-entitymanager:4.1.6.Final'
+  runtime 'org.hibernate:hibernate-validator:4.3.0.Final'
+
+
+  // ---------------------------------------------------------------
+  // test compilation & runtime dependencies
+  // ---------------------------------------------------------------
+  testCompile ('junit:junit-dep:4.10') {
+    exclude group: 'org.hamcrest', module: 'hamcrest-core'
+  }
+  testCompile 'org.hamcrest:hamcrest-all:1.3'
+  testCompile "org.springframework:spring-test:$springFwVer"
+
+  testRuntime "org.hsqldb:hsqldb:$hsqldbVer"
+}
+
+// --------------------------------------------------------------
+// apply code formatter by eclipse ide
+//  see http://www.peterfriese.de/formatting-your-code-using-the-eclipse-code-formatter/
+// this task expects a gradle property `eclipseIdeExePath`
+// your `gradle.properites` has a line for this
+// ex)
+// eclipseIdeExePath=/.../path/to/eclipse  # or c:/path/to/eclipse.exe
+// --------------------------------------------------------------
+task codeFormat(type: Exec) {
+  def confName = 'org.eclipse.jdt.core.prefs'
+  def workConfDir = new File(buildDir, '.settings')
+
+  // windows execution style.
+  // for other operating systems, you can remove 'cmd' and '/c'.
+  commandLine 'cmd', '/c', eclipseIdeExePath, 
+    '-application', 'org.eclipse.jdt.core.JavaCodeFormatter', 
+    '-vm', System.properties['java.home'] + "/bin/java",
+    '-verbose', 
+    '-config',
+    new File(workConfDir, confName).absolutePath,
+    'src'
+
+  doFirst {
+    workConfDir.mkdirs()
+    copy {
+      from '.settings'
+      include confName
+      into workConfDir
     }
-
-    qbeangen "com.mysema.querydsl:querydsl-sql-codegen:$querydslVer"
-
-	// ---------------------------------------------------------------
-	// runtime dependencies
-	// ---------------------------------------------------------------
-    runtime 'ch.qos.logback:logback-classic:1.0.6'
-    runtime 'org.aspectj:aspectjweaver:1.6.12'
-	runtime	'commons-dbcp:commons-dbcp:1.4'
-
-	// jpa runtime dependencies
-	runtime 'org.hibernate:hibernate-entitymanager:4.1.6.Final'
-	runtime 'org.hibernate:hibernate-validator:4.3.0.Final'
-
-
-	// ---------------------------------------------------------------
-	// test compilation & runtime dependencies
-	// ---------------------------------------------------------------
-    testCompile ('junit:junit-dep:4.10') {
-	    exclude group: 'org.hamcrest', module: 'hamcrest-core'
-    }
-    testCompile 'org.hamcrest:hamcrest-all:1.3'
-    testCompile "org.springframework:spring-test:$springFwVer"
-
-    testRuntime "org.hsqldb:hsqldb:$hsqldbVer"
+  }
 }

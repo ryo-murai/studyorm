@@ -32,16 +32,16 @@ import studyorm.jpa.models.Customer;
 import studyorm.jpa.models.Order;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="/application-context-jpa.xml")
+@ContextConfiguration(locations = "/application-context-jpa.xml")
 @TransactionConfiguration
 @Transactional
 public class SpringDataJpaRepositoryTest {
-    @PersistenceContext
-    private EntityManager em;
-	
+	@PersistenceContext
+	private EntityManager em;
+
 	@Autowired
 	private OrderRepository orderRepository;
-	
+
 	@Autowired
 	private CustomerRepository customerRepository;
 
@@ -58,7 +58,8 @@ public class SpringDataJpaRepositoryTest {
 	private Resource dropTablesSql;
 
 	@Rule
-	public TestRule watcher = TestHelper.getLoggingRule(SpringDataJpaRepositoryTest.class);
+	public TestRule watcher = TestHelper
+			.getLoggingRule(SpringDataJpaRepositoryTest.class);
 
 	@BeforeTransaction
 	public void setupDatabase() {
@@ -73,39 +74,43 @@ public class SpringDataJpaRepositoryTest {
 
 	@Test
 	public void testOrderDateAfter() {
-        List<Order> orders = orderRepository.findByDateAfter(new Date(0), new Sort("id"));
-        assertEquals(8, orders.size());
-        assertEquals("martin fowler", orders.get(0).getCustomer().getName());
+		List<Order> orders = orderRepository.findByDateAfter(new Date(0),
+				new Sort("id"));
+		assertEquals(8, orders.size());
+		assertEquals("martin fowler", orders.get(0).getCustomer().getName());
 	}
 
 	@Test
 	public void testOrderOfCustomerName() {
-        List<Order> orders = orderRepository.findByCustomerName("martin fowler");
-        assertEquals(4, orders.size());
-        Order anOrder = orders.get(0);
-        assertEquals("martin fowler", anOrder.getCustomer().getName());
-        assertNotNull(anOrder.getItem());
+		List<Order> orders = orderRepository
+				.findByCustomerName("martin fowler");
+		assertEquals(4, orders.size());
+		Order anOrder = orders.get(0);
+		assertEquals("martin fowler", anOrder.getCustomer().getName());
+		assertNotNull(anOrder.getItem());
 	}
 
 	@Test
 	public void testSpecificationOrderExecution() {
-		List<Order> orders = orderRepository.findAll(isOrderedInPastDays(36500), new Sort("id"));
-        assertEquals(8, orders.size());
-        Customer relation = orders.get(0).getCustomer();
-        assertEquals("martin fowler", relation.getName());
+		List<Order> orders = orderRepository.findAll(
+				isOrderedInPastDays(36500), new Sort("id"));
+		assertEquals(8, orders.size());
+		Customer relation = orders.get(0).getCustomer();
+		assertEquals("martin fowler", relation.getName());
 	}
-	
+
 	@Test
 	public void testSpecificationOrderJoinExecution() {
-		List<Order> orders = orderRepository.findAll(isOrderedByCustomerName("martin fowler"), new Sort("id"));
-        assertEquals(4, orders.size());
-        assertEquals("martin fowler", orders.get(0).getCustomer().getName());
+		List<Order> orders = orderRepository.findAll(
+				isOrderedByCustomerName("martin fowler"), new Sort("id"));
+		assertEquals(4, orders.size());
+		assertEquals("martin fowler", orders.get(0).getCustomer().getName());
 	}
-	
+
 	@Test
 	public void testSpecificationCustomerExecution() {
-        Customer customer = customerRepository.findOne(name("martin fowler"));
-        assertNotNull(customer);
-        assertEquals("martin fowler", customer.getName());
+		Customer customer = customerRepository.findOne(name("martin fowler"));
+		assertNotNull(customer);
+		assertEquals("martin fowler", customer.getName());
 	}
 }

@@ -15,7 +15,9 @@ public class CustomerSpecifications {
 			@Override
 			public Predicate toPredicate(Root<Customer> root,
 					CriteriaQuery<?> query, CriteriaBuilder cb) {
-				return cb.equal(root.get(root.getModel().getSingularAttribute("name", String.class)), name);
+				return cb.equal(
+						root.get(root.getModel().getSingularAttribute("name",
+								String.class)), name);
 			}
 		};
 	}

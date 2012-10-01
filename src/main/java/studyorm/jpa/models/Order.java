@@ -16,13 +16,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="TORDER")
+@Table(name = "TORDER")
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = -8777824445811362213L;
-	
-	public Order() {}
-	
+
+	public Order() {
+	}
+
 	public Order(String item, Date date, Customer customer) {
 		this.item = item;
 		this.date = date;
@@ -30,23 +31,23 @@ public class Order implements Serializable {
 		this.customerId = customer.getId();
 	}
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ORDER_ID")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ORDER_ID")
 	private Long id;
 
 	private String item;
 
-	@Temporal(TemporalType.DATE) 
+	@Temporal(TemporalType.DATE)
 	private Date date;
-	
-	@ManyToOne(cascade=CascadeType.PERSIST)
-	@JoinColumn(name="CUST_ID", nullable=false, updatable=false, insertable=false)
+
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "CUST_ID", nullable = false, updatable = false, insertable = false)
 	private Customer customer;
-	
-	@Column(name ="CUST_ID")
+
+	@Column(name = "CUST_ID")
 	private Long customerId;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -54,7 +55,7 @@ public class Order implements Serializable {
 	public Customer getCustomer() {
 		return customer;
 	}
-	
+
 	public String getItem() {
 		return item;
 	}

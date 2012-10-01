@@ -26,22 +26,21 @@ import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/application-context-jpa.xml", "/bean-jpa-querydsl.xml"})
+@ContextConfiguration(locations = {"/application-context-jpa.xml",
+		"/bean-jpa-querydsl.xml"})
 @TransactionConfiguration
 @Transactional
 public class QueryDslJpaTest extends AbstractDataOperationsTest {
 	@PersistenceContext
-    private EntityManager em;
+	private EntityManager em;
 
 	@Test
 	public void testQuerySingle() {
-		
-        // "select c from Customer c where c.name = :customerName"
+
+		// "select c from Customer c where c.name = :customerName"
 		JPQLQuery query = new JPAQuery(em, EclipseLinkTemplates.DEFAULT);
 		QCustomer c = QCustomer.customer;
-		Customer customer = 
-			query.from(c)
-				.where(c.name.eq("martin fowler"))
+		Customer customer = query.from(c).where(c.name.eq("martin fowler"))
 				.uniqueResult(c);
 		assertEquals("martin fowler", customer.getName());
 	}
@@ -49,14 +48,12 @@ public class QueryDslJpaTest extends AbstractDataOperationsTest {
 	@Test
 	public void testQueryMany() {
 
-        // "select o from Order o join o.customer c where c.name = :customerName"
+		// "select o from Order o join o.customer c where c.name = :customerName"
 		JPQLQuery query = new JPAQuery(em, HQLTemplates.DEFAULT);
 		QOrder o = QOrder.order;
-		List<Order> orders =
-		query.from(o)
-			.where(o.customer.name.eq("martin fowler"))
-			.list(o);
-        assertEquals(4, orders.size());
-        assertEquals("martin fowler", orders.get(0).getCustomer().getName());
+		List<Order> orders = query.from(o)
+				.where(o.customer.name.eq("martin fowler")).list(o);
+		assertEquals(4, orders.size());
+		assertEquals("martin fowler", orders.get(0).getCustomer().getName());
 	}
 }

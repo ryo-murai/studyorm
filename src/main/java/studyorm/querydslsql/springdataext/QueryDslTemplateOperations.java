@@ -48,7 +48,7 @@ public class QueryDslTemplateOperations implements DataOperations {
 			}
 		});
 
-		template.insert(order, new SqlInsertCallback(){
+		template.insert(order, new SqlInsertCallback() {
 			@Override
 			public long doInSqlInsertClause(SQLInsertClause insert) {
 				return insert.populate(newOrder).execute();
@@ -68,62 +68,53 @@ public class QueryDslTemplateOperations implements DataOperations {
 
 	@Override
 	public int deleteOrdersByNameStartWith(final String orderNamePrefix) {
-		return (int)
-		template.delete(order, new SqlDeleteCallback() {
+		return (int) template.delete(order, new SqlDeleteCallback() {
 			@Override
 			public long doInSqlDeleteClause(SQLDeleteClause delete) {
-				return delete
-						.where(order.item.startsWith(orderNamePrefix))
+				return delete.where(order.item.startsWith(orderNamePrefix))
 						.execute();
 			}
 		});
 	}
 
 	@Override
-	public void updateCustomerNameByPk(final Long id, final String newCustomerName) {
+	public void updateCustomerNameByPk(final Long id,
+			final String newCustomerName) {
 		template.update(customer, new SqlUpdateCallback() {
 			@Override
 			public long doInSqlUpdateClause(SQLUpdateClause update) {
-				return update
-						.where(customer.custId.eq(id))
-						.set(customer.name, newCustomerName)
-						.execute();
+				return update.where(customer.custId.eq(id))
+						.set(customer.name, newCustomerName).execute();
 			}
 		});
 	}
 
 	@Override
-	public int updateOrdersItemOlderThan(final Date orderedDate, final String newOrderItem) {
-		return (int)
-		template.update(order, new SqlUpdateCallback() {
+	public int updateOrdersItemOlderThan(final Date orderedDate,
+			final String newOrderItem) {
+		return (int) template.update(order, new SqlUpdateCallback() {
 			@Override
 			public long doInSqlUpdateClause(SQLUpdateClause update) {
-				return update
-						.where(order.date.before(toSql(orderedDate)))
-						.set(order.item, newOrderItem)
-						.execute();
+				return update.where(order.date.before(toSql(orderedDate)))
+						.set(order.item, newOrderItem).execute();
 			}
 		});
 	}
 
 	@Override
 	public String queryCustomerNameByPK(Long id) {
-		SQLQuery query = 
-				template.newSqlQuery()
-					.from(customer)
-					.where(customer.custId.eq(id));
+		SQLQuery query = template.newSqlQuery().from(customer)
+				.where(customer.custId.eq(id));
 
-		return template.queryForObject(query, mapping(String.class, customer.name));
+		return template.queryForObject(query,
+				mapping(String.class, customer.name));
 	}
 
 	@Override
 	public List<String> queryOrderItemsByCustomerEmail(String customerEmail) {
-		SQLQuery query = 
-				template.newSqlQuery()
-					.from(order)
-						.innerJoin(customer)
-						.on(order.custId.eq(customer.custId))
-					.where(customer.email.eq(customerEmail));
+		SQLQuery query = template.newSqlQuery().from(order).innerJoin(customer)
+				.on(order.custId.eq(customer.custId))
+				.where(customer.email.eq(customerEmail));
 
 		return template.query(query, mapping(String.class, order.item));
 	}

@@ -9,7 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import studyorm.AbstractDataOperationsTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/application-context-jdbc.xml", "/bean-jdbc-querydsl.xml"})
+@ContextConfiguration(locations = {"/application-context-jdbc.xml",
+		"/bean-jdbc-querydsl.xml"})
 @TransactionConfiguration
 @Transactional
 public class SpringJdbcTest extends AbstractDataOperationsTest {
