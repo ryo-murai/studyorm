@@ -24,41 +24,40 @@ import studyorm.querydslsql.beans.QTorder;
 import com.mysema.query.sql.SQLQuery;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/application-context-jdbc.xml", "/bean-jdbc-springext-querydsl.xml"})
+@ContextConfiguration(locations = { "/application-context-jdbc.xml",
+        "/bean-jdbc-springext-querydsl.xml" })
 @TransactionConfiguration
 @Transactional
 public class QueryDslTemplateTest extends AbstractDataOperationsTest {
-	@Autowired
-	private QueryDslJdbcTemplate template;
+    @Autowired
+    private QueryDslJdbcTemplate template;
 
-	@Test
-	public void testSingleCustomerQuery() throws Throwable {
-		final QCustomer customer = QCustomer.customer;
-		SQLQuery getCustomer =
-				template.newSqlQuery()
-				.from(customer)
-				.where(customer.custId.eq(43509845L));
-		
-		Customer aCustomer = 
-				template.queryForObject(getCustomer, mapping(Customer.class, customer));
+    @Test
+    public void testSingleCustomerQuery() throws Throwable {
+        final QCustomer customer = QCustomer.customer;
+        SQLQuery getCustomer = template.newSqlQuery().from(customer)
+                .where(customer.custId.eq(43509845L));
 
-		assertEquals("martin fowler", aCustomer.getName());
-	}
+        Customer aCustomer = template.queryForObject(getCustomer,
+                mapping(Customer.class, customer));
 
-	@Test
-	public void testJoinQuery() throws Throwable {
-		final QTorder order = QTorder.torder;
-		QCustomer customer = QCustomer.customer;
-		SQLQuery getOrders =
-			template.newSqlQuery()
-				.from(order)
-				.innerJoin(customer)
-					.on(order.custId.eq(customer.custId))
-				.where(customer.name.eq("martin fowler"));
+        assertEquals("martin fowler", aCustomer.getName());
+    }
 
-		List<String> orderItems =
-		template.query(getOrders, mapping(String.class, order.item));
-		assertEquals(4, orderItems.size());
-		assertThat(orderItems, hasItems("PoEAA", "Domain Specific Languages", "Refactoring", "UML Distilled"));
-	}
+    @Test
+    public void testJoinQuery() throws Throwable {
+        final QTorder order = QTorder.torder;
+        QCustomer customer = QCustomer.customer;
+        SQLQuery getOrders = template.newSqlQuery().from(order)
+                .innerJoin(customer).on(order.custId.eq(customer.custId))
+                .where(customer.name.eq("martin fowler"));
+
+        List<String> orderItems = template.query(getOrders,
+                mapping(String.class, order.item));
+        assertEquals(4, orderItems.size());
+        assertThat(
+                orderItems,
+                hasItems("PoEAA", "Domain Specific Languages", "Refactoring",
+                        "UML Distilled"));
+    }
 }

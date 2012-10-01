@@ -14,22 +14,26 @@ import org.springframework.stereotype.Repository;
 import studyorm.jpa.models.Order;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
-	List<Order> findByDateAfter(Date date, Sort sort);
+public interface OrderRepository
+        extends
+        JpaRepository<Order, Long>,
+        JpaSpecificationExecutor<Order> {
+    List<Order> findByDateAfter(Date date, Sort sort);
 
-	List<Order> findByDateBefore(Date date);
+    List<Order> findByDateBefore(Date date);
 
-	List<Order> findByCustomerName(String customerName);
+    List<Order> findByCustomerName(String customerName);
 
-	List<Order> findByCustomerEmail(String customerEmail);
+    List<Order> findByCustomerEmail(String customerEmail);
 
-	List<Order> findByItemStartingWith(String itemPrefix);
+    List<Order> findByItemStartingWith(String itemPrefix);
 
-	@Modifying
-	@Query("delete Order o where o.item like CONCAT(:prefix, '%')")
-	int deleteItemStartingWith(@Param("prefix")String prefix);
-	
-	@Modifying
-	@Query("update Order o set o.item = :itemName where o.date < :orderedDate")
-	int SetItemBefore(@Param("orderedDate")Date date, @Param("itemName")String newItemName);
+    @Modifying
+    @Query("delete Order o where o.item like CONCAT(:prefix, '%')")
+    int deleteItemStartingWith(@Param("prefix") String prefix);
+
+    @Modifying
+    @Query("update Order o set o.item = :itemName where o.date < :orderedDate")
+    int SetItemBefore(@Param("orderedDate") Date date,
+            @Param("itemName") String newItemName);
 }

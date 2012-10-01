@@ -9,7 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import studyorm.AbstractDataOperationsTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations={"/application-context-jpa.xml", "/bean-jpa-springdatajpa.xml"})
+@ContextConfiguration(locations = { "/application-context-jpa.xml",
+        "/bean-jpa-springdatajpa.xml" })
 @TransactionConfiguration
 @Transactional
 public class SpringDataJpaTest extends AbstractDataOperationsTest {
