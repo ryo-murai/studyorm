@@ -10,15 +10,15 @@ import org.springframework.data.jpa.domain.Specification;
 import studyorm.jpa.models.Customer;
 
 public class CustomerSpecifications {
-	public static Specification<Customer> name(final String name) {
-		return new Specification<Customer>() {
-			@Override
-			public Predicate toPredicate(Root<Customer> root,
-					CriteriaQuery<?> query, CriteriaBuilder cb) {
-				return cb.equal(
-						root.get(root.getModel().getSingularAttribute("name",
-								String.class)), name);
-			}
-		};
-	}
+    public static Specification<Customer> name(final String name) {
+        return new Specification<Customer>() {
+            @Override
+            public Predicate toPredicate(Root<Customer> root,
+                    CriteriaQuery<?> query, CriteriaBuilder cb) {
+                return cb.equal(
+                        root.get(root.getModel().getSingularAttribute("name",
+                                String.class)), name);
+            }
+        };
+    }
 }

@@ -9,42 +9,42 @@ import javax.persistence.Id;
 @Entity
 public class Customer implements Serializable {
 
-	private static final long serialVersionUID = 8620973559393647791L;
+    private static final long serialVersionUID = 8620973559393647791L;
 
-	public Customer() {
-	}
+    public Customer() {
+    }
 
-	public Customer(Long id, String name, String email) {
-		this.id = id;
-		this.name = name;
-		this.email = email;
-	}
+    public Customer(Long id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
 
-	@Id
-	@Column(name = "CUST_ID")
-	private Long id;
+    @Id
+    @Column(name = "CUST_ID")
+    private Long id;
 
-	private String name;
+    private String name;
 
-	private String email;
+    private String email;
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

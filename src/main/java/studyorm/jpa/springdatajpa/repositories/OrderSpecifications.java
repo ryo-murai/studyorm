@@ -14,31 +14,31 @@ import studyorm.jpa.models.Customer;
 import studyorm.jpa.models.Order;
 
 public class OrderSpecifications {
-	public static Specification<Order> isOrderedByCustomerName(
-			final String customerName) {
-		return new Specification<Order>() {
-			@Override
-			public Predicate toPredicate(Root<Order> root,
-					CriteriaQuery<?> query, CriteriaBuilder cb) {
+    public static Specification<Order> isOrderedByCustomerName(
+            final String customerName) {
+        return new Specification<Order>() {
+            @Override
+            public Predicate toPredicate(Root<Order> root,
+                    CriteriaQuery<?> query, CriteriaBuilder cb) {
 
-				Join<Order, Customer> join = root.join(root.getModel()
-						.getSingularAttribute("customer", Customer.class));
-				return cb.equal(join.get("name"), customerName);
-			}
-		};
-	}
+                Join<Order, Customer> join = root.join(root.getModel()
+                        .getSingularAttribute("customer", Customer.class));
+                return cb.equal(join.get("name"), customerName);
+            }
+        };
+    }
 
-	public static Specification<Order> isOrderedInPastDays(final long days) {
-		return new Specification<Order>() {
-			@Override
-			public Predicate toPredicate(Root<Order> root,
-					CriteriaQuery<?> query, CriteriaBuilder cb) {
-				long previousPastDays = System.currentTimeMillis() - 36000000
-						* 24 * days;
-				return cb.greaterThanOrEqualTo(
-						root.get(root.getModel().getSingularAttribute("date",
-								Date.class)), new Date(previousPastDays));
-			}
-		};
-	}
+    public static Specification<Order> isOrderedInPastDays(final long days) {
+        return new Specification<Order>() {
+            @Override
+            public Predicate toPredicate(Root<Order> root,
+                    CriteriaQuery<?> query, CriteriaBuilder cb) {
+                long previousPastDays = System.currentTimeMillis() - 36000000
+                        * 24 * days;
+                return cb.greaterThanOrEqualTo(
+                        root.get(root.getModel().getSingularAttribute("date",
+                                Date.class)), new Date(previousPastDays));
+            }
+        };
+    }
 }

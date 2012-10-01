@@ -19,56 +19,56 @@ import javax.persistence.TemporalType;
 @Table(name = "TORDER")
 public class Order implements Serializable {
 
-	private static final long serialVersionUID = -8777824445811362213L;
+    private static final long serialVersionUID = -8777824445811362213L;
 
-	public Order() {
-	}
+    public Order() {
+    }
 
-	public Order(String item, Date date, Customer customer) {
-		this.item = item;
-		this.date = date;
-		this.customer = customer;
-		this.customerId = customer.getId();
-	}
+    public Order(String item, Date date, Customer customer) {
+        this.item = item;
+        this.date = date;
+        this.customer = customer;
+        this.customerId = customer.getId();
+    }
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ORDER_ID")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ORDER_ID")
+    private Long id;
 
-	private String item;
+    private String item;
 
-	@Temporal(TemporalType.DATE)
-	private Date date;
+    @Temporal(TemporalType.DATE)
+    private Date date;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "CUST_ID", nullable = false, updatable = false, insertable = false)
-	private Customer customer;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "CUST_ID", nullable = false, updatable = false, insertable = false)
+    private Customer customer;
 
-	@Column(name = "CUST_ID")
-	private Long customerId;
+    @Column(name = "CUST_ID")
+    private Long customerId;
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Customer getCustomer() {
-		return customer;
-	}
+    public Customer getCustomer() {
+        return customer;
+    }
 
-	public String getItem() {
-		return item;
-	}
+    public String getItem() {
+        return item;
+    }
 
-	public void setItem(String item) {
-		this.item = item;
-	}
+    public void setItem(String item) {
+        this.item = item;
+    }
 
-	public Date getDate() {
-		return date;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }
