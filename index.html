@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Studyorm : " />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Studyorm</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/ryo-murai/studyorm">View on GitHub</a>
+
+          <h1 id="project_title">Studyorm</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/ryo-murai/studyorm/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/ryo-murai/studyorm/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>studyorm</h1>
+
+<p>just comparing implementations using Object-Relational-Mapping Tools and Libraries in Java</p>
+
+<h2>libraries used</h2>
+
+<ul>
+<li><a href="http://jcp.org/en/jsr/detail?id=317">Java Persistence API 2.0</a></li>
+<li><a href="http://www.springsource.org/spring-data/jpa">Spring DATA JPA</a></li>
+<li><a href="http://www.querydsl.com/">QueryDsl(JPA)</a></li>
+<li><a href="http://www.querydsl.com/">QueryDsl(SQL)</a></li>
+<li><a href="http://static.springsource.org/spring/docs/current/spring-framework-reference/html/jdbc.html">Spring JDBC</a></li>
+<li><a href="http://www.springsource.org/spring-data/jdbc-extensions">Spring DATA JDBC Extension</a></li>
+</ul><h2>implementation status</h2>
+
+<table>
+<tr>
+<th>ORM</th>
+<th>insert</th>
+<th>delete</th>
+<th>batch delete</th>
+<th>update</th>
+<th>batch update</th>
+<th>query</th>
+<th>joined query</th>
+<th>Example Source Code</th>
+</tr>
+<tr>
+<td>Java Persistence API 2.0</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><a href="https://github.com/ryo-murai/studyorm/blob/master/src/main/java/studyorm/jpa/JpaOperations.java">JpaOperations.java</a></td>
+</tr>
+<tr>
+<td>Spring DATA JPA</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><a href="https://github.com/ryo-murai/studyorm/blob/master/src/main/java/studyorm/jpa/springdatajpa/SpringDataJpaOperations.java">SpringDataJpaOperations.java</a></td>
+</tr>
+<tr>
+<td>QueryDsl(JPA)</td>
+<td>N/A<i><a href="#note1">*1</a></i>
+</td>
+<td>N/A<i><a href="#note1">*1</a></i>
+</td>
+<td>N/A<i><a href="#note1">*1</a></i>
+</td>
+<td>N/A<i><a href="#note1">*1</a></i>
+</td>
+<td>N/A<i><a href="#note1">*1</a></i>
+</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><a href="https://github.com/ryo-murai/studyorm/blob/master/src/main/java/studyorm/jpa/querydsl/QueryDslJpaOperations.java">QueryDslJpaOperations.java</a></td>
+</tr>
+<tr>
+<td>QueryDsl(SQL)</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><a href="https://github.com/ryo-murai/studyorm/blob/master/src/main/java/studyorm/querydslsql/QueryDslSqlOperations.java">QueryDslSqlOperations.java</a></td>
+</tr>
+<tr>
+<td>Spring JDBC</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><a href="https://github.com/ryo-murai/studyorm/blob/master/src/main/java/studyorm/springjdbc/SpringJdbcOperations.java">SpringJdbcOperations.java</a></td>
+</tr>
+<tr>
+<td>Spring DATA JDBC Extension</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td><a href="https://github.com/ryo-murai/studyorm/blob/master/src/main/java/studyorm/querydslsql/springdataext/QueryDslTemplateOperations.java">QueryDslTemplateOperations.java</a></td>
+</tr>
+</table><div>QueryDsl(JPA) is just to improve the JPA queries, therefore the JPA EntityManager is still used for updating data manipulations.</div>
+
+<h2>database schema</h2>
+
+<ul>
+<li>in this example implementations, two tables are used, <code>Customer</code> and <code>Order</code>(the actual table is <code>TOrder</code>. This is to avoid syntactic problem on <code>ORDER BY</code>). They have one relation, an Order has a Customer.
+<img src="http://yuml.me/diagram/scruffy;/class/%5BOrder%7C+orderId;+date;+item%5D-customer1%3E%5BCustomer%7C-id;+name;+email;%5D" alt="Diagram">
+</li>
+<li>see <a href="https://github.com/ryo-murai/studyorm/blob/master/src/main/resources/sql/create-tables.sql">create-tables.sql</a> for actual definition.</li>
+</ul><h2>microbenchmarking</h2>
+
+<ul>
+<li>recorded and visualized using <a href="http://labs.carrotsearch.com/junit-benchmarks.html">junit-benchmarks</a>
+</li>
+<li>see <a href="BenchmarkResult.html">benchmark result page</a>
+</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Studyorm maintained by <a href="https://github.com/ryo-murai">ryo-murai</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
