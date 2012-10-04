@@ -129,7 +129,7 @@
 <td>Yes</td>
 <td><a href="https://github.com/ryo-murai/studyorm/blob/master/src/main/java/studyorm/querydslsql/springdataext/QueryDslTemplateOperations.java">QueryDslTemplateOperations.java</a></td>
 </tr>
-</table><div>QueryDsl(JPA) is just to improve the JPA queries, therefore the JPA EntityManager is still used for updating data manipulations.</div>
+</table><div id="note1">*1 QueryDsl(JPA) is just to improve the JPA queries, therefore the JPA EntityManager is still used for updating data manipulations.</div>
 
 <h2>database schema</h2>
 
@@ -138,12 +138,14 @@
 <img src="http://yuml.me/diagram/scruffy;/class/%5BOrder%7C+orderId;+date;+item%5D-customer1%3E%5BCustomer%7C-id;+name;+email;%5D" alt="Diagram">
 </li>
 <li>see <a href="https://github.com/ryo-murai/studyorm/blob/master/src/main/resources/sql/create-tables.sql">create-tables.sql</a> for actual definition.</li>
-</ul><h2>microbenchmarking</h2>
+</ul><h2>micro benchmarking</h2>
+
+<img src="images/benchmark.png" alt="benchmark result" />
 
 <ul>
 <li>recorded and visualized using <a href="http://labs.carrotsearch.com/junit-benchmarks.html">junit-benchmarks</a>
 </li>
-<li>see <a href="BenchmarkResult.html">benchmark result page</a>
+<li>result raw data: <a href="https://gist.github.com/cc27249ad4d88e345dc8#file_readme.md">gist of benchmark result page</a>
 </li>
 </ul>
       </section>
